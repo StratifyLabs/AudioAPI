@@ -1,0 +1,4 @@
+
+set(SOURCES
+	Wav.cpp
+	PARENT_SCOPE)
