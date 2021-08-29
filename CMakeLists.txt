@@ -14,4 +14,11 @@ if(NOT DEFINED API_IS_SDK)
 	include(API)
 endif()
 
-add_subdirectory(library library)
+
+option(AUDIO_API_OPUS_ENABLE "Enable building of OPUS libraries" ON)
+
+add_subdirectory(library)
+
+if(AUDIO_API_OPUS_ENABLE)
+	add_subdirectory(opus)
+endif()
