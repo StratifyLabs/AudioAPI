@@ -29,6 +29,7 @@ void Encoder::destroy() {
 }
 
 Encoder &Encoder::encode(const Encode &options) {
+  API_ASSERT(m_opus_pointer != nullptr);
   API_RETURN_VALUE_IF_ERROR(*this);
   u8 *output = const_cast<u8 *>(options.output().to_const_u8());
   API_SYSTEM_CALL(
@@ -40,6 +41,7 @@ Encoder &Encoder::encode(const Encode &options) {
 }
 
 Encoder &Encoder::encode_float(const EncodeFloat &options) {
+  API_ASSERT(m_opus_pointer != nullptr);
   API_RETURN_VALUE_IF_ERROR(*this);
   u8 *output = const_cast<u8 *>(options.output().to_const_u8());
   API_SYSTEM_CALL(
@@ -51,6 +53,7 @@ Encoder &Encoder::encode_float(const EncodeFloat &options) {
 }
 
 Encoder &Encoder::ctl(int request, void *args) {
+  API_ASSERT(m_opus_pointer != nullptr);
   API_RETURN_VALUE_IF_ERROR(*this);
   API_SYSTEM_CALL("", api()->encoder_ctl(m_opus_pointer, request, args));
   return *this;
@@ -91,8 +94,8 @@ void Decoder::destroy() {
 }
 
 Decoder &Decoder::decode(const Decode &options) {
-  API_RETURN_VALUE_IF_ERROR(*this);
   API_ASSERT(m_opus_pointer != nullptr);
+  API_RETURN_VALUE_IF_ERROR(*this);
   auto *output = const_cast<opus_int16 *>(options.output().to_const_s16());
   API_SYSTEM_CALL("", api()->decode(m_opus_pointer,
                                     options.input().to<const unsigned char>(),
@@ -103,8 +106,8 @@ Decoder &Decoder::decode(const Decode &options) {
 }
 
 Decoder &Decoder::decode_float(const DecodeFloat &options) {
-  API_RETURN_VALUE_IF_ERROR(*this);
   API_ASSERT(m_opus_pointer != nullptr);
+  API_RETURN_VALUE_IF_ERROR(*this);
   auto *output = const_cast<float *>(options.output().to_const_float());
   API_SYSTEM_CALL("", api()->decode_float(
                           m_opus_pointer, options.input().to<const unsigned char>(),
@@ -114,6 +117,7 @@ Decoder &Decoder::decode_float(const DecodeFloat &options) {
 }
 
 Decoder &Decoder::ctl(int request, void *args) {
+  API_ASSERT(m_opus_pointer != nullptr);
   API_RETURN_VALUE_IF_ERROR(*this);
   API_SYSTEM_CALL("", api()->decoder_ctl(m_opus_pointer, request, args));
   return *this;
